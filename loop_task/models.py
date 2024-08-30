@@ -12,7 +12,7 @@ class StoreHours(Base):
     __tablename__ = 'store_hours'
 
     store_id = Column(String, primary_key=True, index=True)
-    day_of_week = Column(Integer)
+    day = Column(Integer)
     start_time_local = Column(Time)
     end_time_local = Column(Time)
 
