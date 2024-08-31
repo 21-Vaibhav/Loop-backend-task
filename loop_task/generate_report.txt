@@ -24,7 +24,6 @@ def get_store_hours(db, store_id, current_day):
         return store_hours.start_time_local, store_hours.end_time_local
     
     else:
-        # Return default times if no store hours found
         current_date = datetime.now().date()
 
         # Construct datetime objects for the start and end of the current day

@@ -10,13 +10,11 @@ def convert_to_local(utc_time_str, timezone_str):
     local_timezone = pytz.timezone(timezone_str)
     local_time = utc_time.astimezone(local_timezone)
     
-    # Print for debugging purposes
-    print(f"UTC: {utc_time_str}, Local: {local_time}, Is DST: {bool(local_time.dst())}")
-    
+    # Print for debugging purposes    
     return local_time
 
 # Piecewise linear interpolation function
-def piecewise_linear_interpolation(timestamps, interval_start, interval_end):
+def piecewise_linear_interpolation(timestamps, interval_start, interval_end): 
     uptime_minutes = 0
     downtime_minutes = 0
     
@@ -24,19 +22,15 @@ def piecewise_linear_interpolation(timestamps, interval_start, interval_end):
         start_time = timestamps[i][0]
         end_time = timestamps[i + 1][0]
         status = timestamps[i][1]
-        
         # Calculate overlap with the interval
         overlap_start = max(start_time, interval_start)
         overlap_end = min(end_time, interval_end)
+    
         
         if overlap_start < overlap_end:
             # Time interval
             interval_duration = (overlap_end - overlap_start).total_seconds() / 60
             
-            # Debugging print
-            print(f"Interval {overlap_start} to {overlap_end} ({interval_duration} minutes): Status = {status}")
-            
-            # Update uptime or downtime based on status
             if status == "active":
                 uptime_minutes += interval_duration
             else:
@@ -116,9 +110,6 @@ timestamps = [
 store_timezone = 'America/New_York'
 timestamps = [(convert_to_local(ts, store_timezone), status) for ts, status in timestamps]
 
-# for ts, status in timestamps:
-#     print(f"Original: {ts}, Converted: {convert_to_local(ts, store_timezone)}")
-
 
 # Business hours (already in local time)
 business_hours_start = datetime.strptime("2023-01-18 07:30:00", "%Y-%m-%d %H:%M:%S")
@@ -143,10 +134,7 @@ uptime_per_lasthour, downtime_per_lasthour = calculate_uptime_downtime_last_hour
 # Aggregate uptime for the whole day
 total_uptime_hours = sum(uptime_per_hour.values()) / 60
 
-print("Uptime last her (in minutes)", uptime_per_lasthour)
+print("Uptime last hour (in minutes)", uptime_per_lasthour)
 print("Uptime per hour (in minutes):", uptime_per_hour)
 print("Downtime per hour (in minutes):", downtime_per_hour)
 print("Total uptime for the day (in hours):", total_uptime_hours)
-
-
-

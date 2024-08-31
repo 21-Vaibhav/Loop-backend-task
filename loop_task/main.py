@@ -2,7 +2,7 @@ from fastapi import FastAPI,Depends
 from .models import StoreStatus, StoreHours, StoreTimezones, ReportStatus
 from .database import SessionLocal, engine, Base
 from sqlalchemy.orm import Session
-from .generate_report import generate_reports_for_all_stores
+from .generate_report_for_relevantdate import generate_report_for_specific_store
 from .database import get_db
 
 app = FastAPI()
@@ -22,6 +22,6 @@ def get_store_status(store_id: str):
     return store_status
 
 @app.get("/generate_report")
-def generate_report(db: Session = Depends(get_db)):
-    generate_reports_for_all_stores(db)
+def generate_report(db: Session = Depends(get_db)): 
+    generate_report_for_specific_store(db)
     return {"message": "Report generation triggered successfully"}
